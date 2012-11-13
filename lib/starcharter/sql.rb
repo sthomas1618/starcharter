@@ -11,7 +11,7 @@ module Starcharter
     # http://www.scribd.com/doc/2569355/Geo-Distance-Search-with-MySQL
     #
     def full_distance(pos_x, pos_y, x_attr, y_attr, options = {})
-      "POWER(POWER(#{pos_x} - #{x_attr}) + (#{pos_y} + #{y_attr}, 2), 2)"
+      "SQRT(POWER(#{pos_x} - #{x_attr}, 2) + POWER(#{pos_y} - #{y_attr}, 2))"
     end
 
     ##
