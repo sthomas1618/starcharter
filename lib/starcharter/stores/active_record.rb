@@ -105,8 +105,8 @@ module Starcharter::Store
 
         b = Starcharter::Calculations.bounding_box([x, y], radius, options)
         args = b + [
-          full_column_name(geocoder_options[:x]),
-          full_column_name(geocoder_options[:y])
+          full_column_name(starcharter_options[:x]),
+          full_column_name(starcharter_options[:y])
         ]
         bounding_box_conditions = Starcharter::Sql.within_bounding_box(*args)
 
@@ -131,8 +131,8 @@ module Starcharter::Store
         Starcharter::Sql.send(
           method_prefix + "_distance",
           x, y,
-          full_column_name(geocoder_options[:x]),
-          full_column_name(geocoder_options[:y]),
+          full_column_name(starcharter_options[:x]),
+          full_column_name(starcharter_options[:y]),
           options
         )
       end
@@ -150,8 +150,8 @@ module Starcharter::Store
           Starcharter::Sql.send(
             method_prefix + "_bearing",
             x, y,
-            full_column_name(geocoder_options[:x]),
-            full_column_name(geocoder_options[:y]),
+            full_column_name(starcharter_options[:x]),
+            full_column_name(starcharter_options[:y]),
             options
           )
         end
@@ -213,8 +213,8 @@ module Starcharter::Store
       do_lookup(false) do |o,rs|
         if r = rs.first
           unless r.latitude.nil? or r.longitude.nil?
-            o.__send__  "#{self.class.geocoder_options[:latitude]}=",  r.latitude
-            o.__send__  "#{self.class.geocoder_options[:longitude]}=", r.longitude
+            o.__send__  "#{self.class.starcharter_options[:latitude]}=",  r.latitude
+            o.__send__  "#{self.class.starcharter_options[:longitude]}=", r.longitude
           end
           r.coordinates
         end
@@ -231,7 +231,7 @@ module Starcharter::Store
       do_lookup(true) do |o,rs|
         if r = rs.first
           unless r.address.nil?
-            o.__send__ "#{self.class.geocoder_options[:fetched_address]}=", r.address
+            o.__send__ "#{self.class.starcharter_options[:fetched_address]}=", r.address
           end
           r.address
         end
