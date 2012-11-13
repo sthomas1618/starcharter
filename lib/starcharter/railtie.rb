@@ -1,5 +1,5 @@
-require 'geocoder'
-require 'geocoder/models/active_record'
+require 'starcharter'
+require 'starcharter/models/active_record'
 
 module Starcharter
   if defined? Rails::Railtie
