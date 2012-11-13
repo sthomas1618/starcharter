@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "starcharter/version"
 
 Gem::Specification.new do |s|
-  s.name        = "Starcharter"
+  s.name        = "starcharter"
   s.version     = Starcharter::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Stephen Thomas"]
