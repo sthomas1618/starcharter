@@ -14,5 +14,4 @@ Gem::Specification.new do |s|
   s.description = "Based on the popular Geocoder, this repurposes it has a simple gem for querying ones own custom data based on x-y coordinates."
   s.files       = `git ls-files`.split("\n") - %w[starcharter.gemspec Gemfile init.rb]
   s.require_paths = ["lib"]
-  s.executables = ["starcharter"]
 end
