@@ -52,7 +52,7 @@ module Starcharter::Store
         #
         scope :within_bounding_box, lambda{ |bounds|
           sw_x, sw_y, ne_x, ne_y = bounds.flatten if bounds
-          if sw_lat && sw_lng && ne_lat && ne_lng
+          if sw_x && sw_y && ne_x && ne_y
             {:conditions => Starcharter::Sql.within_bounding_box(
               sw_x, sw_y, ne_x, ne_y,
               full_column_name(starcharter_options[:x]), 
