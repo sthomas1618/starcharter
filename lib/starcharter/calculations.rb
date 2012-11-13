@@ -6,7 +6,7 @@ module Starcharter
     # Compass point names, listed clockwise starting at North.
     #
     # If you want bearings named using more, fewer, or different points
-    # override Geocoder::Calculations.COMPASS_POINTS with your own array.
+    # override Starcharter::Calculations.COMPASS_POINTS with your own array.
     #
     COMPASS_POINTS = %w[N NE E SE S SW W NW]
 
@@ -40,7 +40,7 @@ module Starcharter
     # Distance spanned by one degree of latitude in the given units.
     #
     # def latitude_degree_distance(units = nil)
-    #   units ||= Geocoder::Configuration.units
+    #   units ||= Starcharter::Configuration.units
     #   2 * Math::PI * earth_radius(units) / 360
     # end
 
@@ -49,7 +49,7 @@ module Starcharter
     # This ranges from around 69 miles at the equator to zero at the poles.
     #
     # def longitude_degree_distance(latitude, units = nil)
-    #   units ||= Geocoder::Configuration.units
+    #   units ||= Starcharter::Configuration.units
     #   latitude_degree_distance(units) * Math.cos(to_radians(latitude))
     # end
 
@@ -57,7 +57,7 @@ module Starcharter
     # Distance between two points on Earth (Haversine formula).
     # Takes two points and an options hash.
     # The points are given in the same way that points are given to all
-    # Geocoder methods that accept points as arguments. They can be:
+    # Starcharter methods that accept points as arguments. They can be:
     #
     # * an array of coordinates ([lat,lon])
     # * a geocodable address (string)
@@ -67,7 +67,7 @@ module Starcharter
     # The options hash supports:
     #
     # * <tt>:units</tt> - <tt>:mi</tt> or <tt>:km</tt>
-    #   See Geocoder::Configuration to know how configure default units.
+    #   See Starcharter::Configuration to know how configure default units.
     #
     def distance_between(point1, point2, options = {})
 
@@ -79,31 +79,32 @@ module Starcharter
       point2 = extract_coordinates(point2)
 
       # convert degrees to radians
-      point1 = to_radians(point1)
-      point2 = to_radians(point2)
+      #point1 = to_radians(point1)
+      #point2 = to_radians(point2)
 
       # compute deltas
-      dlat = point2[0] - point1[0]
-      dlon = point2[1] - point1[1]
+      dx = point2[0] - point1[0]
+      dy = point2[1] - point1[1]
 
-      a = (Math.sin(dlat / 2))**2 + Math.cos(point1[0]) *
-          (Math.sin(dlon / 2))**2 * Math.cos(point2[0])
-      c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
-      c * earth_radius(options[:units])
+      Math.sqrt(dx**2 + dy**2)
+      #a = (Math.sin(dlat / 2))**2 + Math.cos(point1[0]) *
+      #    (Math.sin(dlon / 2))**2 * Math.cos(point2[0])
+      #c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
+      #c * earth_radius(options[:units])
     end
 
     ##
     # Bearing between two points on Earth.
     # Returns a number of degrees from due north (clockwise).
     #
-    # See Geocoder::Calculations.distance_between for
+    # See Starcharter::Calculations.distance_between for
     # ways of specifying the points. Also accepts an options hash:
     #
     # * <tt>:method</tt> - <tt>:linear</tt> or <tt>:spherical</tt>;
     #   the spherical method is "correct" in that it returns the shortest path
     #   (one along a great circle) but the linear method is less confusing
     #   (returns due east or west when given two points with the same latitude).
-    #   See Geocoder::Configuration to know how configure default method.
+    #   See Starcharter::Configuration to know how configure default method.
     #
     # Based on: http://www.movable-type.co.uk/scripts/latlong.html
     #
@@ -118,17 +119,17 @@ module Starcharter
       point2 = extract_coordinates(point2)
 
       # convert degrees to radians
-      point1 = to_radians(point1)
-      point2 = to_radians(point2)
+      #point1 = to_radians(point1)
+      #point2 = to_radians(point2)
 
       # compute deltas
-      dlat = point2[0] - point1[0]
-      dlon = point2[1] - point1[1]
+      dx = point2[0] - point1[0]
+      dy = point2[1] - point1[1]
 
       case options[:method]
       when :linear
-        y = dlon
-        x = dlat
+        x = dx
+        y = dy
 
       when :spherical
         y = Math.sin(dlon) * Math.cos(point2[0])
@@ -159,28 +160,28 @@ module Starcharter
     def geographic_center(points)
 
       # convert objects to [lat,lon] arrays and convert degrees to radians
-      coords = points.map{ |p| to_radians(extract_coordinates(p)) }
+      #coords = points.map{ |p| to_radians(extract_coordinates(p)) }
+      coords = points.map{ |p| extract_coordinates(p) }
 
       # convert to Cartesian coordinates
-      x = []; y = []; z = []
+      x = []; y = [];
       coords.each do |p|
-        x << Math.cos(p[0]) * Math.cos(p[1])
-        y << Math.cos(p[0]) * Math.sin(p[1])
-        z << Math.sin(p[0])
+        x << p[0]
+        y << p[1]
       end
 
       # compute average coordinate values
-      xa, ya, za = [x,y,z].map do |c|
+      [x,y].map do |c|
         c.inject(0){ |tot,i| tot += i } / c.size.to_f
       end
 
       # convert back to latitude/longitude
-      lon = Math.atan2(ya, xa)
-      hyp = Math.sqrt(xa**2 + ya**2)
-      lat = Math.atan2(za, hyp)
+      # lon = Math.atan2(ya, xa)
+      # hyp = Math.sqrt(xa**2 + ya**2)
+      # lat = Math.atan2(za, hyp)
 
       # return answer in degrees
-      to_degrees [lat, lon]
+      # to_degrees [lat, lon]
     end
 
     ##
@@ -193,21 +194,21 @@ module Starcharter
     # roughly limiting the possible solutions in a geo-spatial search
     # (ActiveRecord queries use it thusly).
     #
-    # See Geocoder::Calculations.distance_between for
+    # See Starcharter::Calculations.distance_between for
     # ways of specifying the point. Also accepts an options hash:
     #
     # * <tt>:units</tt> - <tt>:mi</tt> or <tt>:km</tt>.
-    #   See Geocoder::Configuration to know how configure default units.
+    #   See Starcharter::Configuration to know how configure default units.
     #
     def bounding_box(point, radius, options = {})
-      lat,lon = extract_coordinates(point)
+      x,y = extract_coordinates(point)
       radius  = radius.to_f
       units   = options[:units] || Starcharter::Configuration.units
       [
-        lat - (radius / latitude_degree_distance(units)),
-        lon - (radius / longitude_degree_distance(lat, units)),
-        lat + (radius / latitude_degree_distance(units)),
-        lon + (radius / longitude_degree_distance(lat, units))
+        x - radius,
+        y - radius,
+        x + radius,
+        y + radius
       ]
     end
 
@@ -265,7 +266,7 @@ module Starcharter
 
     ##
     # Radius of the Earth in the given units (:mi or :km).
-    # See Geocoder::Configuration to know how configure default units.
+    # See Starcharter::Configuration to know how configure default units.
     #
     def earth_radius(units = nil)
       units ||= Starcharter::Configuration.units
@@ -296,11 +297,11 @@ module Starcharter
       case point
       when Array
         if point.size == 2
-          lat, lon = point
-          if !lat.nil? && lat.respond_to?(:to_f) and
-            !lon.nil? && lon.respond_to?(:to_f)
+          x, y = point
+          if !x.nil? && x.respond_to?(:to_f) and
+            !y.nil? && y.respond_to?(:to_f)
           then
-            return [ lat.to_f, lon.to_f ]
+            return [ x.to_f, y.to_f ]
           end
         end
       when String

@@ -8,11 +8,11 @@ module Starcharter
       ##
       # Set attribute names and include the Geocoder module.
       #
-      def chart_by(options = {}, &block)
+      def chart_by(x_attr, y_attr, options = {}, &block)
         starcharter_init(
           starcharter:       true,
-          x:                 options[:x]  || :x,
-          y:                 options[:y] || :y,
+          x:                 x_attr,
+          y:                 y_attr,
           starcharter_block: block,
           units:             options[:units],
           method:            options[:method]

@@ -64,8 +64,8 @@ module Rails
 end
 
 # Require Geocoder after ActiveRecord simulator.
-require 'geocoder'
-require "geocoder/lookups/base"
+require 'starcharter'
+require "starcharter/lookups/base"
 
 ##
 # Mock HTTP request to geocoding service.

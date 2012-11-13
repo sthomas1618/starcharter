@@ -18,19 +18,19 @@ module Starcharter
   # (geocoding service provider, caching, units of measurement, etc).
   # Configuration can be done in two ways:
   #
-  # 1) Using Geocoder.configure and passing a block
+  # 1) Using Starcharter.configure and passing a block
   #    (useful for configuring multiple things at once):
   #
-  #   Geocoder.configure do |config|
+  #   Starcharter.configure do |config|
   #     config.timeout      = 5
   #     config.lookup       = :yahoo
   #     config.api_key      = "2a9fsa983jaslfj982fjasd"
   #     config.units        = :km
   #   end
   #
-  # 2) Using the Geocoder::Configuration singleton directly:
+  # 2) Using the Starcharter::Configuration singleton directly:
   #
-  #   Geocoder::Configuration.language = 'pt-BR'
+  #   Starcharter::Configuration.language = 'pt-BR'
   #
   # Default values are defined in Configuration#set_defaults.
   #
@@ -47,8 +47,8 @@ module Starcharter
       # :http_proxy,
       # :https_proxy,
       # :api_key,
-      :cache,
-      :cache_prefix,
+      #:cache,
+      #:cache_prefix,
       :always_raise,
       :units,
       :distances
@@ -70,8 +70,8 @@ module Starcharter
       # @http_proxy   = nil         # HTTP proxy server (user:pass@host:port)
       # @https_proxy  = nil         # HTTPS proxy server (user:pass@host:port)
       # @api_key      = nil         # API key for geocoding service
-      @cache        = nil         # cache object (must respond to #[], #[]=, and #keys)
-      @cache_prefix = "starcharter:" # prefix (string) to use for all cache keys
+      #@cache        = nil         # cache object (must respond to #[], #[]=, and #keys)
+      #@cache_prefix = "starcharter:" # prefix (string) to use for all cache keys
 
       # exceptions that should not be rescued by default
       # (if you want to implement custom error handling);

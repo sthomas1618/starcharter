@@ -19,7 +19,7 @@ task :default => [:test, :integration]
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "Geocoder #{Geocoder::VERSION}"
+  rdoc.title = "Starcharter #{Starcharter::VERSION}"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

@@ -1,7 +1,7 @@
-Geocoder
+Starcharter
 ========
 
-Geocoder is a complete geocoding solution for Ruby. With Rails it adds geocoding (by street or IP address), reverse geocoding (find street address based on given coordinates), and distance queries. It's as simple as calling `geocode` on your objects, and then using a scope like `Venue.near("Billings, MT")`.
+Starcharter, inspired by Geocoder, aims to be a simple charting gem for plain old x-y coordinates.
 
 
 Compatibility

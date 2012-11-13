@@ -1,4 +1,4 @@
-require 'geocoder'
+require 'starcharter'
 
 module Starcharter
 
@@ -18,7 +18,7 @@ module Starcharter
         end
       end
 
-      def starcharter_by
+      def charted_by
         fail
       end
 
